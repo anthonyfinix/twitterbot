@@ -1,0 +1,8 @@
+### Get rules
+GET http://localhost:80
+### Get rules
+GET http://localhost:80/api
+### Get rules
+GET http://localhost:80/api/stream/rules
+### Delete rule
+DELETE http://localhost:80/api/stream/rules?id=1356911350794973184
