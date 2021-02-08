@@ -3,6 +3,8 @@ const initiateStream = async (io)=>{
   console.log('Twitter Streaming Initiated')
     let twitterStream = await stream();
     twitterStream.on("data", data => {
+      console.log(data);
+      console.log("____________________");
       if (Buffer.isBuffer(data)) {
         try {
           let jsonData = JSON.parse(data)
