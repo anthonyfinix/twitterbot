@@ -5,7 +5,7 @@ const port = process.env.PORT || 80;
 const cors = require("cors");
 const routes = require("./routes");
 const http = require("http");
-const socketio = require("socket.io");
+const socketio = require('socket.io');
 const server = http.createServer(app);
 const io = socketio(server);
 const initiateStream = require('./twitter/initiateStream');
@@ -14,8 +14,8 @@ const initiateStream = require('./twitter/initiateStream');
   app.use(cors());
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
+  app.use(express.static('public'))
   app.use(routes);
-  initiateStream(io)
-  
-  app.listen(port, () => console.log(`Listening to port ${port}`));
+  server.listen(port, () => console.log(`Listening to port ${port}`));
+  initiateStream(io);
 })();

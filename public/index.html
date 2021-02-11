@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .tweet {
+            padding: 10px;
+            border: 2px solid black;
+        }
+
+        span {
+            background-color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Tweets</h1>
+    <div id="twitter_Wrapper"></div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.min.js"
+        integrity="sha512-tXH7Av8en7+/hg0XwBppaCDPmpJhUXbZ+j7lNC4y+ZQpmCZQcgQN6RjkM7Irj1MUW7bZengfuTOqR4RzCC4bnA=="
+        crossorigin="anonymous"></script>
+    <script>
+        const socket = io();
+        const twitterWrapper = document.querySelector('#twitter_Wrapper')
+        socket.on('connect', () => {
+            console.log('connected to server');
+        })
+        socket.on('tweet', msg => {
+            console.log(msg)
+            let { error } = msg;
+            if (error) {
+                console.log(msg)
+            } else {
+                try {
+                    let tweet = document.createElement('div');
+                    tweet.setAttribute('class', 'tweet');
+                    tweet.innerHTML = msg.text;
+                    let stocks = msg.text.match(/\$[a-zA-z]+/g);
+                    stocks.forEach(stock => {
+                        let span = document.createElement('span');
+                        span.innerHTML = stock;
+                        tweet.appendChild(span);
+                    });
+                    twitterWrapper.appendChild(tweet)
+                    window.scrollTo(0, document.body.scrollHeight);
+                } catch (e) {
+                    console.log(e)
+                }
+            }
+        })
+        socket.on('error', msg => {
+            console.log(msg);
+        })
+    </script>
+</body>
+
+</html>
