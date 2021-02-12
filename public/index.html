@@ -7,6 +7,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
+        body {
+            margin: 0px;
+        }
+
+        header {
+            padding: 5px 10px;
+        }
+
+        .main-wrapper {
+            height: 100vh;
+            display: flex;
+        }
+
+        #twitter_Wrapper {
+            flex-basis: 50%;
+            height: 100vh;
+            background-color: rgb(245, 245, 245);
+        }
+
+        #controller {
+            padding: 10px;
+        }
+
         .tweet {
             padding: 10px;
             border: 2px solid black;
@@ -19,13 +42,29 @@
 </head>
 
 <body>
-    <h1>Tweets</h1>
-    <div id="twitter_Wrapper"></div>
+    <header>
+        <h1>Tweets</h1>
+    </header>
+    <div class="main-wrapper">
+        <div id="twitter_Wrapper"></div>
+        <div id="controller">
+            <h5>Controls</h5>
+            <input type="text" class="value" placeholder="Enter something">
+            <button class="submit"> Submit</button>
+        </div>
+    </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/3.1.1/socket.io.min.js"
         integrity="sha512-tXH7Av8en7+/hg0XwBppaCDPmpJhUXbZ+j7lNC4y+ZQpmCZQcgQN6RjkM7Irj1MUW7bZengfuTOqR4RzCC4bnA=="
         crossorigin="anonymous"></script>
     <script>
-        const socket = io();
+        console.log()
+        const socket = io(window.location.origin, {
+            auth: {
+                token: "anthony"
+            },
+        });
+        const submitBtn = document.querySelector('.submit');
+        const value = document.querySelector('.value');
         const twitterWrapper = document.querySelector('#twitter_Wrapper')
         socket.on('connect', () => {
             console.log('connected to server');
@@ -55,6 +94,10 @@
         })
         socket.on('error', msg => {
             console.log(msg);
+        })
+        submitBtn.addEventListener('click', () => {
+            // console.log('test');
+            socket.emit('data', 'value')
         })
     </script>
 </body>
